@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const Users = require("../models/user-model");
 
 // @desc Register user
@@ -28,6 +29,7 @@ const registerUser = async (req, res) => {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         email: newUser.email,
+        token: generateToken(newUser.id),
       });
     })
     .catch((err) => {
@@ -53,6 +55,7 @@ const loginUser = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
+            token: generateToken(user.id),
           });
         } else {
           res.status(401).json({ errMsg: "Invalid email or password" });
@@ -63,6 +66,11 @@ const loginUser = async (req, res) => {
         res.status(500).json({ errMsg: "Login failed" });
       });
   }
+};
+
+// Generate JWT
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
 module.exports = { registerUser, loginUser };
