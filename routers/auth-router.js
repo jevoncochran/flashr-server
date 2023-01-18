@@ -5,44 +5,11 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const users = require("../models/user-model");
-const { registerUser } = require("../controllers/authController");
+const { registerUser, loginUser } = require("../controllers/authController");
 
 router.post("/register", registerUser);
 
-router.post("/login", (req, res) => {
-  let { username, password } = req.body;
-
-  if (!username || !password) {
-    res.status(400).json({ errMsg: "Please enter username and password" });
-  } else {
-    users
-      .findUserBy({ username })
-      .then((user) => {
-        if (user && bcrypt.compareSync(password, user.password)) {
-          const token = generateToken(user);
-
-          res.status(200).json({
-            message: `Welcome ${user.firstName}`,
-            account: {
-              id: user.id,
-              name: `${user.firstName} ${user.lastName}`,
-              email: user.email,
-              username: user.username,
-            },
-            token,
-          });
-        } else {
-          return res
-            .status(401)
-            .json({ errMsg: "Invalid username or password" });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ errMsg: "A server error has occurred" });
-      });
-  }
-});
+router.post("/login", loginUser);
 
 const generateToken = (user) => {
   const payload = {
