@@ -10,8 +10,6 @@ exports.up = function (knex) {
 
     tbl.string("lastName", 50).notNullable();
 
-    tbl.string("username", 50).notNullable();
-
     tbl.string("email", 50).notNullable();
 
     tbl.string("password", 255).notNullable();
