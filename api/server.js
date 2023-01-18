@@ -2,8 +2,9 @@ const express = require("express");
 const cors = require("cors");
 
 // Take this out and only keep authRouter
-const userRouter = require("../routers/user-router");
-const authRouter = require("../routers/auth-router");
+const userRouter = require("../routers/userRouter");
+const authRouter = require("../routers/authRouter");
+const categoryRouter = require("../routers/categoryRouter");
 
 const server = express();
 
@@ -19,5 +20,6 @@ server.get("/", (req, res) => {
 // Take out userRouter middleware
 server.use("/api/users", userRouter);
 server.use("/api/auth", authRouter);
+server.use("/api/categories", categoryRouter);
 
 module.exports = server;
