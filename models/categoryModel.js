@@ -4,4 +4,8 @@ const getCategories = (userId) => {
   return db("categories").select("id", "title").where({ userId });
 };
 
-module.exports = { getCategories };
+const getCategoryById = (id) => {
+  return db("categories").where({ id }).first();
+};
+
+module.exports = { getCategories, getCategoryById };
