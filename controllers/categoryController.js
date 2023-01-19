@@ -1,4 +1,5 @@
 const Categories = require("../models/categoryModel");
+const Cards = require("../models/cardModel");
 
 // @desc Get categories by user
 // @route GET /api/categories
@@ -9,4 +10,22 @@ const getUserCategories = async (req, res) => {
   res.status(200).json(categories);
 };
 
-module.exports = { getUserCategories };
+// @desc Get cards by category
+// @route GET /api/categories/:categoryId/cards
+// @access Private
+const getCardsByCategory = async (req, res) => {
+  const { categoryId } = req.params;
+
+  const category = await Categories.getCategoryById(categoryId);
+
+  if (!category) {
+    res.status(400).json({ errMsg: "Category not found" });
+  } else if (category.userId !== req.user.id) {
+    res.status(401).json({ errMsg: "Not authorized" });
+  } else {
+    const cards = await Cards.getCardsByCategory(categoryId);
+    res.status(200).json(cards);
+  }
+};
+
+module.exports = { getUserCategories, getCardsByCategory };
