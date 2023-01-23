@@ -4,17 +4,17 @@ const getCategories = (userId) => {
   return db("categories").select("id", "title").where({ userId });
 };
 
-const getCategoryById = (id) => {
-  return db("categories").where({ id }).first();
-};
-
 const createCategory = (category) => {
   return db("categories")
     .insert(category, "id")
     .then((ids) => {
       const [id] = ids;
-      return getCategoryById(id);
+      return findCategoryBy(id);
     });
 };
 
-module.exports = { getCategories, getCategoryById, createCategory };
+const findCategoryBy = (filter) => {
+  return db("categories").where(filter).first();
+};
+
+module.exports = { getCategories, findCategoryBy, createCategory };

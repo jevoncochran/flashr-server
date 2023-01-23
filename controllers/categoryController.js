@@ -39,7 +39,6 @@ const createCategory = async (req, res) => {
     res.status(404).json({ errMsg: "Please provide a title" });
   } else {
     const category = await Categories.createCategory({ title, userId });
-    console.log("category: ", category);
     res.status(201).json(category);
   }
 };
