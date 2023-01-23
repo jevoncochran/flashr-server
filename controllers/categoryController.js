@@ -28,4 +28,20 @@ const getCardsByCategory = async (req, res) => {
   }
 };
 
-module.exports = { getUserCategories, getCardsByCategory };
+// @desc Create category
+// @route POST /api/categories
+// @access Private
+const createCategory = async (req, res) => {
+  const { title } = req.body;
+  const userId = req.user.id;
+
+  if (!title) {
+    res.status(404).json({ errMsg: "Please provide a title" });
+  } else {
+    const category = await Categories.createCategory({ title, userId });
+    console.log("category: ", category);
+    res.status(201).json(category);
+  }
+};
+
+module.exports = { getUserCategories, getCardsByCategory, createCategory };
