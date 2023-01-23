@@ -8,4 +8,13 @@ const getCategoryById = (id) => {
   return db("categories").where({ id }).first();
 };
 
-module.exports = { getCategories, getCategoryById };
+const createCategory = (category) => {
+  return db("categories")
+    .insert(category, "id")
+    .then((ids) => {
+      const [id] = ids;
+      return getCategoryById(id);
+    });
+};
+
+module.exports = { getCategories, getCategoryById, createCategory };
