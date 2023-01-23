@@ -16,7 +16,7 @@ const getUserCategories = async (req, res) => {
 const getCardsByCategory = async (req, res) => {
   const { categoryId } = req.params;
 
-  const category = await Categories.getCategoryById(categoryId);
+  const category = await Categories.findCategoryBy({ id: categoryId });
 
   if (!category) {
     res.status(400).json({ errMsg: "Category not found" });
