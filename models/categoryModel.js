@@ -4,8 +4,8 @@ const getCategories = (userId) => {
   return db("categories").select("id", "title").where({ userId });
 };
 
-const getCategoryById = (id) => {
-  return db("categories").where({ id }).first();
+const findCategoryBy = (filter) => {
+  return db("categories").select("id", "title").where(filter).first();
 };
 
 const createCategory = (category) => {
@@ -13,8 +13,27 @@ const createCategory = (category) => {
     .insert(category, "id")
     .then((ids) => {
       const [id] = ids;
-      return getCategoryById(id);
+      return findCategoryBy(id);
     });
 };
 
-module.exports = { getCategories, getCategoryById, createCategory };
+const updateCategory = (changes, id) => {
+  return db("categories")
+    .where({ id })
+    .update(changes)
+    .then(() => {
+      return findCategoryBy({ id });
+    });
+};
+
+const deleteCategory = (id) => {
+  return db("categories").where({ id }).del();
+};
+
+module.exports = {
+  getCategories,
+  findCategoryBy,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+};

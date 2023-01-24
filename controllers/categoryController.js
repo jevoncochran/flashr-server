@@ -16,7 +16,7 @@ const getUserCategories = async (req, res) => {
 const getCardsByCategory = async (req, res) => {
   const { categoryId } = req.params;
 
-  const category = await Categories.getCategoryById(categoryId);
+  const category = await Categories.findCategoryBy({ id: categoryId });
 
   if (!category) {
     res.status(400).json({ errMsg: "Category not found" });
@@ -39,9 +39,39 @@ const createCategory = async (req, res) => {
     res.status(404).json({ errMsg: "Please provide a title" });
   } else {
     const category = await Categories.createCategory({ title, userId });
-    console.log("category: ", category);
     res.status(201).json(category);
   }
 };
 
-module.exports = { getUserCategories, getCardsByCategory, createCategory };
+// @desc Update category
+// @route PATCH /api/categories/:categoryId
+// @access Private
+const updateCategory = async (req, res) => {
+  const { title } = req.body;
+  const { categoryId } = req.params;
+
+  if (!title) {
+    res.status(404).json({ errMsg: "Please provide a title" });
+  } else {
+    const udpated = await Categories.updateCategory({ title }, categoryId);
+    res.status(200).json(udpated);
+  }
+};
+
+// @desc Delete category
+// @route DELETE /api/categories/:categoryId
+// @access Private
+const deleteCategory = async (req, res) => {
+  const { categoryId } = req.params;
+
+  await Categories.deleteCategory(categoryId);
+  res.status(200).json({ deletedCategory: Number(categoryId) });
+};
+
+module.exports = {
+  getUserCategories,
+  getCardsByCategory,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+};
