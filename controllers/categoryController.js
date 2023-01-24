@@ -58,9 +58,20 @@ const updateCategory = async (req, res) => {
   }
 };
 
+// @desc Delete category
+// @route DELETE /api/categories/:categoryId
+// @access Private
+const deleteCategory = async (req, res) => {
+  const { categoryId } = req.params;
+
+  await Categories.deleteCategory(categoryId);
+  res.status(200).json({ deletedCategory: Number(categoryId) });
+};
+
 module.exports = {
   getUserCategories,
   getCardsByCategory,
   createCategory,
   updateCategory,
+  deleteCategory,
 };

@@ -26,9 +26,14 @@ const updateCategory = (changes, id) => {
     });
 };
 
+const deleteCategory = (id) => {
+  return db("categories").where({ id }).del();
+};
+
 module.exports = {
   getCategories,
   findCategoryBy,
   createCategory,
   updateCategory,
+  deleteCategory,
 };
