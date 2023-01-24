@@ -43,4 +43,24 @@ const createCategory = async (req, res) => {
   }
 };
 
-module.exports = { getUserCategories, getCardsByCategory, createCategory };
+// @desc Update category
+// @route PATCH /api/categories/:categoryId
+// @access Private
+const updateCategory = async (req, res) => {
+  const { title } = req.body;
+  const { categoryId } = req.params;
+
+  if (!title) {
+    res.status(404).json({ errMsg: "Please provide a title" });
+  } else {
+    const udpated = await Categories.updateCategory({ title }, categoryId);
+    res.status(200).json(udpated);
+  }
+};
+
+module.exports = {
+  getUserCategories,
+  getCardsByCategory,
+  createCategory,
+  updateCategory,
+};
