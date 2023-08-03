@@ -5,7 +5,7 @@ const getCategories = (userId) => {
 };
 
 const findCategoryBy = (filter) => {
-  return db("categories").select("id", "title").where(filter).first();
+  return db("categories").select("id", "title", "userId").where(filter).first();
 };
 
 const createCategory = (category) => {
