@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { DatabaseService } from 'src/database/database.service';
 import * as bcrypt from 'bcryptjs';
 import { RegisterDto } from './dto/register.dto';
+import { generateRandomDigits } from 'src/common/utils/generateRandomDigits';
 
 @Injectable()
 export class AuthService {
@@ -60,13 +61,23 @@ export class AuthService {
       data: { email, password: hash },
     });
 
-    return this.login(newUser);
+    // Create new user profile
+    if (newUser) {
+      const profile = await this.databaseService.profile.create({
+        data: {
+          userId: newUser.id,
+          username: `user${generateRandomDigits(7)}`,
+        },
+      });
+
+      return this.login({ ...newUser, profileId: profile.id });
+    }
   }
 
   async login(user: any) {
     const payload = { email: user.email, sub: user.id };
     return {
-      user: { email: user.email, id: user.id },
+      user: { email: user.email, id: user.id, profileId: user.profileId },
       accessToken: this.jwtService.sign(payload),
     };
   }
