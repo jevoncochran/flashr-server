@@ -7,9 +7,16 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { ProfilesModule } from './profiles/profiles.module';
 import { DecksModule } from './decks/decks.module';
+import { ViewsModule } from './views/views.module';
 
 @Module({
-  imports: [AuthModule, DatabaseModule, ProfilesModule, DecksModule],
+  imports: [
+    AuthModule,
+    DatabaseModule,
+    ProfilesModule,
+    DecksModule,
+    ViewsModule,
+  ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
