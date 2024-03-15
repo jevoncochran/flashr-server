@@ -17,8 +17,8 @@ export class ProfilesService {
     return `This action returns all profiles`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} profile`;
+  findOne(id: string) {
+    return this.databaseService.profile.findUnique({ where: { id } });
   }
 
   update(id: number, updateProfileDto: UpdateProfileDto) {

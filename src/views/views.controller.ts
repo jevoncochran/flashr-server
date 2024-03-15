@@ -32,6 +32,11 @@ export class ViewsController {
     return this.viewsService.findOne(+id);
   }
 
+  @Get('/most-recent')
+  getMostRecentViews(@Req() req: Request) {
+    return this.viewsService.getMostRecentViews(req.user.id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateViewDto: UpdateViewDto) {
     return this.viewsService.update(id, updateViewDto);

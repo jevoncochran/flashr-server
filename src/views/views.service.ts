@@ -17,7 +17,7 @@ export class ViewsService {
 
     if (!previousView) {
       return this.databaseService.view.create({
-        data: { deckId: view.deckId, userId: profile.id },
+        data: { deckId: view.deckId, userId: profile.id, count: 1 },
       });
     } else {
       return this.update(previousView.id, { count: previousView.count + 1 });
@@ -30,6 +30,18 @@ export class ViewsService {
 
   findOne(id: number) {
     return `This action returns a #${id} view`;
+  }
+
+  async getMostRecentViews(userId: string) {
+    const profile = await this.databaseService.profile.findUnique({
+      where: { userId },
+    });
+
+    return this.databaseService.view.findMany({
+      where: { userId: profile.id },
+      orderBy: { updatedAt: 'desc' }, // Order by updatedAt in descending order
+      take: 3, // Limit to 3 most recent views
+    });
   }
 
   async update(id: string, updates: UpdateViewDto) {
