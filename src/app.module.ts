@@ -8,6 +8,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { ProfilesModule } from './profiles/profiles.module';
 import { DecksModule } from './decks/decks.module';
 import { ViewsModule } from './views/views.module';
+import { CardsModule } from './cards/cards.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ViewsModule } from './views/views.module';
     ProfilesModule,
     DecksModule,
     ViewsModule,
+    CardsModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
