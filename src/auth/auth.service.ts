@@ -76,9 +76,15 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { email: user.email, sub: user.id };
+
+    const profile = await this.databaseService.profile.findUnique({
+      where: { userId: user.id },
+    });
+
     return {
       user: { email: user.email, id: user.id, profileId: user.profileId },
       accessToken: this.jwtService.sign(payload),
+      profile,
     };
   }
 }
